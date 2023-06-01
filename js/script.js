@@ -12,6 +12,8 @@ let test = document.getElementById("timeTitle")
 //Global Scope
 let seconds = 0; 
 let timer; 
+let checkImageArray = [];
+let checkCoverArray = [];
 
 
 //Create Start Game Function
@@ -26,30 +28,65 @@ startButton.addEventListener("click", () => {
 
 //Setting Random location for each picture. 
 
-//TODO: Search a better way than duplicate pictures in folder. 
+//TODO: Search a better way than duplicate pictures in folder. You're getting always the same sequence
 function setSrc() {
     let previuousIndex = [];
+    let previousPosition = []
     
     for(let i = 0; i <= 100; i++)
     {
-        let randomSrc = Math.floor(Math.random() * 20) + 1;
+        let randomSrc = Math.floor(Math.random() * 10) + 1;
         
         if(!previuousIndex.includes(randomSrc))
         {
             previuousIndex.push(randomSrc)
-            console.log(previuousIndex)
         }
         
-        if(previuousIndex.length === 20){
+        if(previuousIndex.length === 10){
+            break;
+        }
+        
+        
+    }
+
+    for(let i = 0; i <= 100; i++){
+
+        let randonPosition = Math.floor(Math.random() * 20);
+        if(!previousPosition.includes(randonPosition))
+        {
+            previousPosition.push(randonPosition)
+        }
+        
+        if(previousPosition.length === 20){
             break;
         }
     }
+
+    let incrementor = 0; 
+    let secondIncrementor = 0; 
+
     for(let i = 0; i < 20; i++)
     {
-        images[i].src = `src/images/picture${previuousIndex[i]}.png`
-        images[i].style.display = "none"; 
+        
+        if(incrementor >= 10)
+        { 
+            images[previousPosition[i]].src = `src/images/picture${previuousIndex[secondIncrementor]}.png`
+            secondIncrementor++
 
+        }
+
+        if(incrementor < 10)
+        {
+            images[previousPosition[i]].src = `src/images/picture${previuousIndex[incrementor]}.png`
+            incrementor++
+        }
+
+        images[previousPosition[i]].style.display = "none"; 
+
+
+        
     }
+
 }
 
 //TODO: Create Stopwatch 
@@ -82,13 +119,40 @@ for(let i = 0; i < imagesCovers.length; i++)
     imagesCovers[i].addEventListener('click', ()=> {
         imagesCovers[i].style.display = "none"; 
         images[i].style.display = "block";
-        checkCard()
+        checkCard(images[i], imagesCovers[i])
+        console.log(images[i] + " " + imagesCovers[i])
     })
 }
 
 //Check if Carts are same
-function checkCard(image, image2)
+function checkCard(image, cover)
 { 
-    if()
+
+    if(checkImageArray.length < 2)
+    { 
+        checkImageArray.push(image)
+        checkCoverArray.push(cover) 
+    }
+    if(checkImageArray[0].src === undefined || checkImageArray[1].src === undefined)
+    {
+        console.log("To no Undefined")
+    }
+    if(checkImageArray[0].src === checkImageArray[1].src)
+    {
+        console.log("You Win")
+    }
+    else
+    {
+        setInterval(returnCard,2000)
+    }
+}
+
+function returnCard()
+{
+    checkImageArray[0].style.display = "none"
+    checkCoverArray[0].style.display = "block"
+    checkArray[1].style.display = "none"
+    checkCoverArray[1].style.display = "block"
+
 }
 //TODO: Create A function to reset game, so, reset timer, counter and call setSrc(); 
