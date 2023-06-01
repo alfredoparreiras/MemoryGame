@@ -1,0 +1,151 @@
+/* Starter Configuration */
+* {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--primary-color);
+
+}
+
+:root {
+    --primary-color: #ffffff;
+    --accent-color: #F0B04D;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background: #232526;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+
+h3 {
+    font-size: 2.25rem;
+}
+
+
+/* Initial Screen */
+.initialScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.initialScreen .btn{
+    margin-top: 100px;
+}
+
+.btn {
+    width: 120px;
+    text-decoration: none;
+    background-color: var(--accent-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    height: 48px;
+    cursor: pointer; 
+}
+
+h1 {
+    margin: 1.5rem 0 0 0;
+    font-size: 5.063rem;
+    animation: myAnim 1s ease 0s 1 normal forwards;
+}
+
+@keyframes myAnim {
+	0% {
+		opacity: 0;
+		transform: translateX(-250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+h2 {
+    font-size: 3.375rem;
+    animation: myAnim2 1s ease 0s 1 normal forwards;
+}
+
+@keyframes myAnim2 {
+	0% {
+		opacity: 0;
+		transform: translateX(250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Main Section */
+main {
+    height: 100vh;
+    display: none;
+    padding: 5rem;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.board {
+    width: 794px;
+    height: 580px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 150px);
+    border-radius: 15px;
+}
+
+.board img {
+    cursor: pointer;
+    border-radius: 16px;
+    max-width: 125px;
+}
+.scoreBoard {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.scoreBoard div:last-of-type{
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+h4{ 
+    font-size: 1.750rem;
+    margin-bottom: 5px;
+}
+
+input[type="text"]{
+    background-color: transparent;
+    font-size: 1.5rem;
+    height: 30px;
+    width: 120px;
+    border: none;
+
+}
+
+.showImage
+{ 
+    transform: rotateY(180deg)
+}
