@@ -8,20 +8,22 @@ let pairs = document.getElementById("pairsFound");
 let images = Array.from(document.querySelectorAll(".img"));
 let imagesCovers = Array.from(document.querySelectorAll(".cover"));
 let test = document.getElementById("timeTitle")
+let resetBtn = document.getElementById("resetGameBtn")
 
 //Global Scope
-let seconds = 0; 
-let timer; 
+let interval;
+let timer = 0;
 let checkImageArray = [];
 let checkCoverArray = [];
+let pairsFound = 0;
 
 
 //Create Start Game Function
 startButton.addEventListener("click", () => {
     initialScreen.style.display = "none";
     secondScreen.style.display = "flex";
-    pairs.value = 0;
-    startTime()
+    pairs.value = pairsFound;
+    startTimer()
     setSrc()
 })
 
@@ -82,35 +84,23 @@ function setSrc() {
         }
 
         images[previousPosition[i]].style.display = "none"; 
-
-
         
     }
 
 }
 
 //TODO: Create Stopwatch 
-function startTime()
-{
-    timer = setInterval(() => {
-        seconds++
-        time.value = formatTime(seconds);
+function startTimer() {
+    interval = setInterval(function() {
+        timer++;
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+        time.value = formatTime(minutes) + ":" + formatTime(seconds);
     }, 1000);
 }
 
-function formatTime(sec)
-{
-    let hours = Math.floor(sec / 3600);
-    let minutes = Math.floor((sec - (hours * 3600)) / 60); 
-    seconds = sec - (hours * 3600) - (minutes * 60); 
-
-    //Adding 0 if it's less than 10; 
-    if(hours < 10) { hours = `0${hours}`}
-    if(minutes < 10) { minutes = `0${minutes}`}
-    if(seconds < 10) { seconds =`0${seconds}`}
-
-    return `${hours} : ${minutes} : ${seconds}`
-
+function formatTime(num) {
+    return num < 10 ? '0' + num : num;
 }
 
 //Reveling Cards
@@ -120,39 +110,90 @@ for(let i = 0; i < imagesCovers.length; i++)
         imagesCovers[i].style.display = "none"; 
         images[i].style.display = "block";
         checkCard(images[i], imagesCovers[i])
-        console.log(images[i] + " " + imagesCovers[i])
     })
 }
 
 //Check if Carts are same
 function checkCard(image, cover)
 { 
-
     if(checkImageArray.length < 2)
     { 
         checkImageArray.push(image)
         checkCoverArray.push(cover) 
     }
-    if(checkImageArray[0].src === undefined || checkImageArray[1].src === undefined)
+    if(checkImageArray.length === 2 && checkCoverArray.length === 2)
     {
-        console.log("To no Undefined")
+        if(checkImageArray[0].src === checkImageArray[1].src)
+        {
+            pairsFound++
+            pairs.value = pairsFound;
+            checkCoverArray = []
+            checkImageArray = []
+
+            winner()    
+        }
+        else
+        {
+            setTimeout(returnCard,1000)
+            setTimeOut(function() {
+                if (isBlocked) {
+                    unblockScreen();
+                } else {
+                    blockScreen();
+                }
+                // Toggle the isBlocked flag
+                isBlocked = !isBlocked;
+            }, 1005);
+            
+        }
     }
-    if(checkImageArray[0].src === checkImageArray[1].src)
-    {
-        console.log("You Win")
-    }
-    else
-    {
-        setInterval(returnCard,2000)
-    }
+}
+
+function blockScreen() {
+    document.getElementById('blocker').style.display = 'block';
+}
+
+function unblockScreen() {
+    document.getElementById('blocker').style.display = 'none';
 }
 
 function returnCard()
 {
     checkImageArray[0].style.display = "none"
     checkCoverArray[0].style.display = "block"
-    checkArray[1].style.display = "none"
+    
+    checkImageArray[1].style.display = "none"
     checkCoverArray[1].style.display = "block"
 
+    checkCoverArray = []
+    checkImageArray = []
+}
+
+function winner()
+{
+    if(pairsFound === 10)
+    {
+        alert("You Won!")
+        resetGame(); 
+    }
 }
 //TODO: Create A function to reset game, so, reset timer, counter and call setSrc(); 
+resetBtn.addEventListener('click', resetGame)
+function resetGame(){
+    timer = 0; 
+    pairsFound = 0;
+    pairs.value = pairsFound;
+
+
+    for(let image of images)
+    {
+        image.style.display = "none"
+    }
+
+    for(let cover of imagesCovers)
+    {
+        cover.style.display = "block"
+    }
+}
+
+winner()
